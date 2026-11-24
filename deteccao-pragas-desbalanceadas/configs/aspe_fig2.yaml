@@ -1,0 +1,40 @@
+# ASPE lido pela FIGURA 2 do artigo (Sayni et al., 2025) — REGISTRADO EM 18/11/2026, ANTES DO TREINO.
+# ATENÇÃO: experimento POSTERIOR à avaliação final no teste (configs/teste_final.yaml). Decisão só na VALIDAÇÃO;
+# o teste, se usado, é reportado como análise complementar pós-teste, e não altera nenhuma conclusão já registrada.
+motivacao: >
+  O ASPE implementado segue o TEXTO do artigo (Passos 1-4: compressão, CA, SE, fusão com X, depois do C2f) e não reproduziu
+  o ganho relatado (+4,7 pp de mAP@0,5 sobre o YOLOv8s). A Figura 2 do artigo descreve OUTRO bloco: cada bottleneck do C2f
+  vira Conv -> Conv -> Coordinate Attention -> CIB (atenção espacial: média e máximo nos canais, concat, conv, sigmoid),
+  com a soma residual do bottleneck, sem SE e sem a fusão com X. Pergunta: a não reprodução se deve à leitura pelo texto?
+modelo: YOLOv8s (yolov8s.pt), backbone estágios 1-4 (camadas 2, 4, 6, 8), 6 bottlenecks convertidos; neck e cabeça intactos
+escolhas_nao_informadas_pelo_artigo:
+  ca: redução 32, mínimo 8 canais, BN + h-swish (mesmo CoordAtt do ASPE do texto)
+  cib_kernel: 7x7 sem viés (módulo espacial do CBAM, Woo et al., ECCV 2018)
+  inicializacao: cv1/cv2 do bottleneck vêm do pré-treino; CA e CIB aleatórios (sem inicialização em zero, como no artigo)
+custo_medido: +18.204 parâmetros (11,140 M -> 11,158 M). O artigo informa +1,6 M; esta leitura NÃO reproduz a Tabela V.
+protocolo: configs/protocolo_plano.yaml (A01, lr0 0,001, AdamW, 300 épocas, paciência 50), AgroPest-12 agrupado, seed 42
+comparacao: E01 YOLOv8s seed 42 (val fp32 fitness 0,4544; mAP50 0,7328) e E02 ASPE-texto seed 42 (0,4547; 0,7068)
+hipotese: >
+  Se a Figura 2 representa o bloco que gerou o resultado do artigo, o ASPE-Fig2 supera o E01 na validação: fitness > 0,4594
+  (E01 + 0,005) e mAP@0,5 > 0,7328. Refutável: fitness ≤ 0,4594 indica que a leitura pela figura também não reproduz o
+  ganho, e a não reprodução não se explica pela divergência texto × figura. Limite: seed única (dp entre seeds do YOLO26s
+  no AgroPest ≈ 0,005).
+comando: python scripts/treinar_plano.py E02 --aspe-fig2
+resultado_val_fp32:   # 18/11/2026, python scripts/avaliar_plano.py val plano_E02_s42_afig2
+  run: plano_E02_s42_afig2   # parada antecipada na época 109; melhor época 59
+  mAP50: 0.7188
+  mAP50_95: 0.4166
+  P: 0.818
+  R: 0.669
+  fitness: 0.4468   # E01 0,4544 (-0,0076) | E02 0,4547 (-0,0079)
+  veredito: >
+    HIPÓTESE REFUTADA. Fitness 0,4468 <= 0,4594 e mAP@0,5 0,7188 < 0,7328 (E01). O ASPE-Fig2 ficou abaixo do E01 e do E02
+    em fitness e em mAP@0,5:0,95 (0,4166 contra ~0,424 e ~0,427); em mAP@0,5 ficou entre os dois (+1,2 pp sobre o E02,
+    -1,4 pp sobre o E01). A leitura pela Figura 2 também não reproduz o ganho do artigo: a não reprodução não se explica
+    pela divergência texto x figura. Seed única; a diferença para o E01 (-0,008) é maior que o dp entre seeds (~0,005).
+ressalva_retomada: >
+  ATENÇÃO (descoberto em 18/11/2026, depois do veredito): este treino foi RETOMADO na época 14 e, por um defeito do
+  código de retomada (corrigido em src/tcc/models/yolo_aspe.py, _carregar_depois), CA e CIB do modelo vivo voltaram a
+  pesos aleatórios nessa época; só o EMA guardava o que tinham aprendido. O veredito acima vale com essa ressalva.
+  Para um veredito limpo: apagar runs/plano/plano_E02_s42_afig2 e runs/logs/plano_plano_E02_s42_afig2.yaml (ou renomear)
+  e rodar de novo, sem interromper: python scripts/treinar_plano.py E02 --aspe-fig2 --tag limpo

@@ -1,0 +1,55 @@
+# Augmentation focada nas classes minoritárias, aplicada ao E05 (YOLO26s-ASPE residual). EXTENSÃO, fora do plano original
+# (o protocolo de 03/11 deixava copy-paste fora do escopo; o aluno incluiu em 12/11/2026). Tudo o mais = protocolo congelado
+# (configs/protocolo_plano.yaml, augmentation A01, seed 42, 300 épocas, patience 50). Código: src/tcc/data/minoritarias.py.
+# REGISTRADO EM 12/11/2026, ANTES DE QUALQUER TREINO DESTAS VARIANTES. Parâmetros fixados sem ajuste (sem tempo para busca).
+# Rodar tudo: python scripts/rodar_minoritarias.py
+
+referencia: plano_E04_s42_ares   # E05; fitness na val (fp32) = 0,4985 (mAP50 0,7709; mAP50-95 0,4682)
+
+classes_alvo: [2, 3, 4, 8]
+# Beetles, Caterpillars, Earthworms, Slugs = as 4 classes com MENOS imagens no TREINO (693, 723, 561, 645 de 9.209;
+# a maior é Bees com 864). Critério só com o treino. Observação: o AgroPest-12 é quase balanceado (1,5:1 em imagens);
+# essas 4 classes também são 4 das 5 de pior AP50 do E05 na validação (a 5ª é Ants, que é a classe com MAIS instâncias).
+
+parceiros:   # grupos de espécies que o E05 confunde na VALIDAÇÃO (caixa certa, classe errada, conf>=0,25); decisão na val, permitido
+  # grupo vermiformes/moluscos: Slugs->Earthworms 10, Caterpillars->Slugs 6, Caterpillars->Earthworms 6, Snails->Slugs 6
+  3: [4, 8, 9]
+  4: [3, 8, 9]
+  8: [3, 4, 9]
+  9: [3, 4, 8]
+  # grupo besouros: Beetles->Weevils 9, Earwigs->Beetles 7
+  2: [5, 11]
+  5: [2, 11]
+  11: [2, 5]
+
+variantes:
+  RFS:
+    descricao: sobreamostragem das imagens com classe-alvo (peso 2; mesmo nº de imagens por época)
+    parametros: {rfs_peso: 2.0}
+    hipotese: >
+      As classes-alvo aparecem mais vezes por época (cerca de 1,6x), sem custo extra de computação. Deve subir o AP das
+      classes-alvo (sobretudo o recall de Caterpillars, 0,39 no E05) sem derrubar as demais. Como o dataset é quase balanceado,
+      o efeito esperado é pequeno. Refutável: fitness não supera a referência por mais de 0,005.
+  CP:
+    descricao: copy-paste de instâncias das classes-alvo (recorte pela caixa, borda suavizada), p=0,3 por imagem carregada
+    parametros: {cp_p: 0.3}
+    hipotese: >
+      Mais instâncias das classes-alvo em fundos e contextos novos. Deve subir o recall dessas classes. Risco: o recorte
+      retangular leva o fundo original junto e cria bordas artificiais; se o modelo aprender a borda, não generaliza.
+      Refutável: fitness não supera a referência por mais de 0,005.
+  CPC:
+    descricao: copy-paste de uma espécie parecida (mesmo grupo de confusão) na imagem, p=0,5 quando a imagem tem classe de um grupo
+    parametros: {cpc_p: 0.5}
+    hipotese: >
+      Ver espécies parecidas lado a lado obriga a separar pela aparência, não pelo contexto. Deve reduzir os erros de classe
+      dentro dos grupos (Slugs/Earthworms/Caterpillars/Snails e Beetles/Weevils/Earwigs). Refutável: o número de confusões
+      nesses grupos não cai, ou a fitness não supera a referência por mais de 0,005.
+
+regra_de_combinacao: >
+  Fixada antes dos resultados. Depois das 3 variantes isoladas, avaliadas SÓ na validação (fp32, fitness = 0,1·mAP50 + 0,9·mAP50-95):
+  (1) candidatas = variantes com fitness acima da referência (Δ > 0);
+  (2) se houver 2 ou mais candidatas, treina a combinação das 2 melhores;
+  (3) se as 3 superarem a referência por mais de 0,005, treina também a combinação das 3;
+  (4) com menos de 2 candidatas não há combinação (combinar duas que não ajudam não tem justificativa).
+  Vencedora final = maior fitness na val entre referência, isoladas e combinações; só ela iria ao teste, uma vez.
+  Limite: seed única; com 4–5 comparações, uma diferença menor que ~0,005 não é conclusiva.

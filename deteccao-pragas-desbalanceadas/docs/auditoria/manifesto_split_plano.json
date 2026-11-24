@@ -1,0 +1,18 @@
+{
+ "train": {
+  "n": 9209,
+  "sha256_da_lista": "a534f92cc4162daeb0ac18767e9105ff9fec6a7ce52c1ecde45e0e8dfe4cfb3e"
+ },
+ "val": {
+  "n": 1967,
+  "sha256_da_lista": "c010ed3a60e164761d11167e6bcc4f99771f8ea10d9ce2fdc8d9625e5e193de4"
+ },
+ "test": {
+  "n": 1967,
+  "sha256_da_lista": "494553269e73fb3abe96a7e73e692ce7df0e3cba52c351f9e385c66e7b6dfb38"
+ },
+ "seed": 51,
+ "total": 13143,
+ "grupos": 5461,
+ "metodo": "union-find (cópias Roboflow + dHash<=3) + iterative stratification por classe e faixas de instâncias"
+}

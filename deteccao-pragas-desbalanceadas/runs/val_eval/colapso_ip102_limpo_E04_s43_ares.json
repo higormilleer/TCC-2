@@ -1,0 +1,63 @@
+{
+ "curva_treino_ultimas": {
+  "115": 0.3842,
+  "116": 0.3825,
+  "117": 0.3812,
+  "118": 0.3799,
+  "119": 0.3759,
+  "120": 0.3669,
+  "121": 0.3598,
+  "122": 0.3422,
+  "123": 0.3234,
+  "124": 0.293,
+  "125": 0.2492,
+  "126": 0.1532
+ },
+ "epoca_last_fp32": 125,
+ "bn_running_var_max": [
+  [
+   "model.8.aspe.cv2.bn.running_var",
+   5011.484375
+  ],
+  [
+   "model.23.one2one_cv2.2.0.bn.running_var",
+   1311.3446044921875
+  ],
+  [
+   "model.23.cv2.2.0.bn.running_var",
+   976.184814453125
+  ],
+  [
+   "model.2.aspe.cv2.bn.running_var",
+   617.0864868164062
+  ],
+  [
+   "model.6.aspe.cv2.bn.running_var",
+   580.80029296875
+  ]
+ ],
+ "bn_acima_limite_fp16": 0,
+ "peso_abs_max": 5011.484375,
+ "last_fp32.pt_fp32": {
+  "map50": 0.21628140435264845,
+  "map50_95": 0.14924869485468592,
+  "fitness": 0.15595196580448217
+ },
+ "last_fp32.pt_fp16": {
+  "map50": 0.20894842729999485,
+  "map50_95": 0.1448065006105062,
+  "fitness": 0.1512206932794551
+ },
+ "best_fp32.pt_fp32": {
+  "map50": 0.5747127858322998,
+  "map50_95": 0.36769659394374704,
+  "fitness": 0.3883982131326023
+ },
+ "best_fp32.pt_fp16": {
+  "map50": 0.5745380192551073,
+  "map50_95": 0.36768827444372754,
+  "fitness": 0.3883732489248655
+ },
+ "conclusao": "queda real do modelo (aparece tamb\u00e9m em fp32)",
+ "fitness_registrado_no_treino_ultima_epoca": 0.1532
+}

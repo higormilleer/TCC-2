@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Bases de dados (baixe e prepare com scripts/preparar_dados.py)
+data/
+*.zip
+
+# Pesos e saídas de treino
+*.pt
+*.onnx
+runs/*
+!runs/val_eval/
+!runs/historico_treinos.csv
+!runs/registro_treinos.csv
+runs/val_eval/pred/
+runs/val_eval/*.pkl
+runs/val_eval/*.log
+
+# Figuras geradas pelos scripts de docs/escrita/figuras/scripts
+docs/escrita/figuras/*.png
+docs/escrita/figuras/*.jpg
+docs/escrita/figuras/*.pdf
+docs/escrita/figuras/scripts/ip102_train_sets.json
+
+# Credenciais do Kaggle
+.kaggle/
+kaggle.json

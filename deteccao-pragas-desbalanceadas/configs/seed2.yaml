@@ -1,0 +1,23 @@
+# Seeds extras de treino (43 e 44) para E03 (YOLO26s) e E05 (YOLO26s-ASPE residual), AgroPest-12 e IP102.
+# Com a seed 42 já treinada, cada comparação fica com 3 seeds.
+# REGISTRADO EM 14/11/2026, ANTES DOS TREINOS. Só muda a seed de TREINO (split, protocolo e augmentation A01 idênticos).
+# Rodar tudo: python scripts/rodar_seeds.py
+seeds_novas: [43, 44]
+seeds_total: [42, 43, 44]
+ordem: >
+  s43 AgroPest (E03, E05) -> s43 IP102 (E03, E05) -> s44 AgroPest (E03, E05) -> s44 IP102 (E03, E05).
+  Assim, se faltar tempo, as duas comparações ficam com o mesmo número de seeds.
+
+regra_geral: >
+  Em cada dataset, "E05 supera E03" se a diferença de fitness (val, fp32, 0,1·mAP50 + 0,9·mAP50-95) for positiva em
+  TODAS as seeds e a média das diferenças for maior que 0,005. Todas negativas: "E05 não supera E03". Sinais mistos:
+  "não conclusivo". Vale o mesmo para qualquer número de seeds que tiver terminado (relatar quantas).
+
+regra_classes_raras_ip102: >
+  Faixa "raras" = classes com < 20 imagens de TREINO (configs/minoritarias_ip102_limpo.yaml). "E05 melhora as raras" se o
+  AP50-95 médio da faixa for maior que o do E03 em TODAS as seeds e a média das diferenças for maior que 0,02 (limiar maior
+  porque a faixa tem só 32 imagens de validação). Também se reporta em quantas classes raras o E05 ficou acima em todas as seeds.
+
+limites: >
+  As seeds medem a variação do TREINO. Não eliminam a incerteza da AMOSTRA de validação: a faixa rara tem 32 imagens; mesmo
+  com 3 seeds concordando, a confirmação final é no teste (75 imagens das classes raras), usado uma única vez.
