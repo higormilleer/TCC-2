@@ -5,7 +5,7 @@ __pycache__/
 venv/
 
 # Bases de dados (baixe e prepare com scripts/preparar_dados.py)
-data/
+/data/
 *.zip
 
 # Pesos e saídas de treino
