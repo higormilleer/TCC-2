@@ -1,0 +1,61 @@
+# Augmentation das classes minoritárias no IP102 (cauda longa), sobre o E05 (YOLO26s-ASPE residual). EXTENSÃO, fora do plano original.
+# Tudo o mais = protocolo congelado (configs/protocolo_plano.yaml, augmentation A01, seed 42, 300 épocas, patience 50), dataset ip102_limpo.
+# REGISTRADO EM 12/11/2026, ANTES DE QUALQUER TREINO DESTAS VARIANTES (e antes do próprio E05 no IP102).
+# Classes-alvo, limiar t e faixas de frequência saem SÓ do TREINO (contagem de imagens por classe). Parâmetros fixados sem busca.
+# Rodar tudo: python scripts/rodar_ip102_minoritarias.py
+
+dataset: ip102_limpo
+treino_imagens: 11924
+imagens_por_classe_no_treino: {min: 2, mediana: 54, max: 1922, classes_com_imagens: 97}
+
+classes_alvo: [2, 4, 5, 6, 8, 9, 12, 13, 17, 28, 29, 30, 31, 32, 33, 35, 36, 40, 43, 44, 52, 53, 54, 55, 56, 57, 61, 64, 65, 72, 74, 77, 78, 79, 81, 82, 83, 85, 88, 89, 90, 91, 92, 93, 96, 97, 98, 100]
+# 48 classes com MENOS imagens de treino que a mediana (54).
+
+faixas_de_frequencia:   # para reportar AP por faixa (como APr/APc/APf do LVIS), definidas pelo nº de imagens de TREINO
+  raras_menos_de_20: [2, 6, 12, 28, 30, 35, 52, 55, 61, 72, 77, 81, 85, 88, 89, 90, 91, 93, 98]
+  comuns_20_a_99: [1, 4, 5, 7, 8, 9, 10, 11, 13, 17, 19, 27, 29, 31, 32, 33, 34, 36, 40, 41, 42, 43, 44, 53, 54, 56, 57, 58, 62, 64, 65, 71, 73, 74, 76, 78, 79, 82, 83, 84, 87, 92, 94, 96, 97, 99, 100]
+  frequentes_100_ou_mais: [0, 3, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 37, 38, 39, 45, 46, 47, 48, 49, 50, 51, 66, 67, 68, 69, 70, 86, 95, 101]
+
+geometria_colagem:   # IP102: quase sempre 1 inseto grande por imagem (caixa mediana ~36% da imagem); colagem menor para caber
+  cp_escala: [0.3, 0.8]     # fração aleatória da área relativa original do objeto
+  cp_area_max: 0.15         # fração máxima da área da imagem
+
+variantes:
+  RFS:
+    descricao: Repeat Factor Sampling do LVIS (Gupta et al., 2019), t = mediana das frequências = 54/11924
+    parametros: {rfs_t: 0.004529}
+    hipotese: >
+      r_c = max(1, sqrt(t/f_c)): classes abaixo da mediana são sorteadas mais vezes (até 5.2x a mais na mais rara),
+      mesmo nº de imagens por época. Deve subir o AP das classes raras e comuns e pouco mudar o das frequentes.
+      Refutável: AP das faixas rara+comum não sobe, ou fitness geral cai mais que 0,005.
+  CP:
+    descricao: copy-paste de instâncias das classes-alvo em outras imagens (recorte retangular, borda suavizada), p=0,3
+    parametros: {cp_p: 0.3}
+    hipotese: >
+      Mais instâncias das classes raras em contextos novos. Risco: no IP102 quase toda imagem tem uma única classe; a colagem
+      cria imagens com duas espécies, distribuição que a validação não tem. Refutável: AP das faixas rara+comum não sobe.
+  MIX:
+    descricao: MixUp com p=0,3 (o protocolo A01 usa 0,1); adicionada em 12/11/2026 após revisão da literatura, antes de qualquer treino
+    parametros: {mixup: 0.3}
+    hipotese: >
+      Crasto (2024, arXiv 2403.07113), YOLOv5 em COCO de cauda longa: MixUp p=0,3 deu +2,3 mAP e melhorou todas as classes raras,
+      enquanto RFS (-0,9), amostragem por classe (-0,6) e peso na loss (-0,8) pioraram. Esperado: ganho no mAP geral e nas faixas
+      rara/comum. Refutável: fitness não supera o E05 do IP102 por mais de 0,005.
+  # sem CPC no IP102: os grupos de confusão dependeriam do E05 do IP102, que ainda não existe.
+
+sequencia: [base E05 sem augmentation extra, MIX, RFS, CP, RFS+CP]   # os 5 treinos rodam direto, sem regra condicional (pedido do aluno)
+conflito_na_literatura: >
+  RFS+copy-paste é a melhor combinação no LVIS (Ghiasi et al., CVPR 2021, detectores de dois estágios com máscaras), mas em YOLO
+  (um estágio) a amostragem piorou (Crasto, 2024). Esta série testa os dois lados no IP102.
+
+pos_processamento_norcal:   # SEM treino; aplicado depois, no melhor modelo e no E03 do IP102
+  referencia: Pan et al., NeurIPS 2021 (NorCal), adaptado a classificador sigmoid
+  formula: >
+    s'_c = max_k(s_k) · (s_c · n_c^-γ) / Σ_k (s_k · n_k^-γ), n_c = nº de instâncias da classe c no TREINO (mín. 1);
+    o max_k(s_k) faz o papel do "fundo" do NorCal (quão objeto é a caixa), e a normalização redistribui a confiança entre as classes.
+  gammas: [0.0, 0.1, 0.2, 0.3, 0.5, 0.75, 1.0]
+  escolha: γ de maior fitness na validação (é escolha na val; o valor final só se confirma no teste, uma vez)
+comparacao: >
+  Tudo na VALIDAÇÃO (fp32). Fitness = 0,1·mAP50 + 0,9·mAP50-95. Referências: E03 IP102 (0,3944) e E04 IP102 (0,3471).
+  Augmentations comparadas com o E05 do IP102. Limiar de ruído 0,005 (seed única). A validação tem 67 classes com < 20 imagens:
+  AP por classe é muito ruidoso; olhar o mAP geral e o AP médio por faixa.

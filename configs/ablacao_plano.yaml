@@ -1,0 +1,55 @@
+# Ablação de data augmentation (Seção 8 do plano). HIPÓTESES E PARÂMETROS DEFINIDOS ANTES DE QUALQUER RESULTADO.
+# Registrado em 04/11/2026. Valores de A03 são uma proposta do aluno; em 10/11/2026 o orientador instruiu seguir o plano
+# (selecionar o melhor modelo e avançar), e A03 foi mantido exatamente como registrado em 04/11 (nenhum valor foi alterado depois).
+# Candidato selecionado em 10/11/2026: E03 (YOLO26s) — ver docs/auditoria/selecao_candidato.md.
+# Como rodar: python scripts/treinar_plano.py E03 --aug A02   e   python scripts/treinar_plano.py E03 --aug A03   (A01 = treino E03 existente)
+# Tudo o mais permanece idêntico a configs/protocolo_plano.yaml (dataset, split, resolução, batch, otimizador, lr,
+# scheduler, épocas, seed, critério de checkpoint). Aplicada ao modelo candidato escolhido SOMENTE pela validação (E01–E04).
+
+A01:
+  descricao: referência (augmentation do protocolo congelado)
+  pergunta: Qual é a referência de comparação?
+  hipotese: nenhuma; é a configuração de partida e coincide com o experimento do modelo candidato em E01–E04 (reaproveitar o treino).
+  parametros: {mosaic: 1.0, close_mosaic: 50, mixup: 0.1, hsv_h: 0.015, hsv_s: 0.7, hsv_v: 0.4, degrees: 15.0, translate: 0.1, scale: 0.2, perspective: 0.0001, fliplr: 0.5, flipud: 0.5}
+
+A02:
+  descricao: sem Mosaic e MixUp
+  pergunta: Qual é a contribuição dessas duas operações?
+  hipotese: >
+    Mosaic e MixUp aumentam a variedade de contextos e a densidade de objetos por imagem; remover as duas deve reduzir
+    o mAP50-95 e aumentar o gap treino-validação. Como o dataset tem cópias aumentadas de uma mesma foto, o ganho
+    pode ser menor que o esperado. A hipótese é refutável: se o mAP não cair, as operações não contribuem neste cenário.
+  mudancas_em_relacao_a_A01: {mosaic: 0.0, mixup: 0.0, close_mosaic: 0}
+
+A03:
+  descricao: augmentation conservador
+  pergunta: Transformações menos agressivas preservam melhor os detalhes das pragas?
+  hipotese: >
+    As pragas são pequenas e muitas vezes de baixo contraste; rotação de ±15°, flip vertical, perspectiva e variações fortes
+    de cor podem distorcer ou apagar detalhes. Uma configuração mais branda deve manter ou melhorar o mAP50-95,
+    sobretudo nas classes de objetos pequenos (Ants, Weevils). Refutável: se piorar, a variedade extra é útil.
+  mudancas_em_relacao_a_A01: {mosaic: 0.5, close_mosaic: 50, mixup: 0.0, hsv_h: 0.010, hsv_s: 0.4, hsv_v: 0.3, degrees: 0.0, translate: 0.05, scale: 0.1, perspective: 0.0, flipud: 0.0, fliplr: 0.5}
+
+A04:
+  descricao: augmentation padrão do Ultralytics 8.4.165 para detecção (default.yaml), aplicado ao E03
+  pergunta: O padrão do framework supera a configuração do protocolo (A01) neste cenário?
+  hipotese: >
+    Registrada em 12/11/2026, ANTES de qualquer resultado de A04. O padrão do Ultralytics foi ajustado em COCO (objetos
+    de vários tamanhos, sem rotação/flip vertical/MixUp). Aqui as pragas são fotos de campo com orientação livre, então o
+    flip vertical e a rotação de A01 podem ser úteis; já a escala 0,5 do padrão é mais agressiva que a de A01 (0,2).
+    Hipótese: diferença menor que o limiar de ruído (0,005 de fitness). Refutável: se A04 superar A01 por mais de 0,005,
+    o padrão do framework é melhor neste cenário e passa a ser candidato (decisão só pela validação).
+  mudancas_em_relacao_a_A01: {mixup: 0.0, degrees: 0.0, scale: 0.5, flipud: 0.0, perspective: 0.0, close_mosaic: 10}
+
+A05:
+  descricao: SEM nenhum augmentation (só letterbox para 640), aplicado ao E04 (ASPE do artigo) e ao E05 (ASPE residual), AgroPest-12 e IP102
+  pergunta: Quanto o augmentation do protocolo (A01) contribui para os modelos com ASPE, e a contribuição é diferente entre ASPE e ASPE residual?
+  hipotese: >
+    Registrada em 16/11/2026, ANTES de qualquer resultado de A05. Comparação com os treinos A01 já existentes de mesma seed (42):
+    E04 e E05 nos dois datasets. Sem augmentation o modelo vê sempre as mesmas imagens e deve sobreajustar mais cedo
+    (melhor época mais cedo, gap treino-validação maior). Hipótese: fitness cai mais que 0,005 nos 4 casos, e a queda é maior
+    no IP102 (102 classes, cauda longa, poucas imagens nas classes raras). Hipótese secundária: o ASPE do artigo, que precisa
+    reaprender parte das features pré-treinadas, perde mais sem augmentation do que o residual (que começa igual ao YOLO26s).
+    Refutável: queda ≤ 0,005 indica que o augmentation não contribui neste cenário; queda igual nos dois ASPE refuta a secundária.
+    Limite: seed única (42), como as demais ablações de augmentation.
+  mudancas_em_relacao_a_A01: {mosaic: 0.0, close_mosaic: 0, mixup: 0.0, hsv_h: 0.0, hsv_s: 0.0, hsv_v: 0.0, degrees: 0.0, translate: 0.0, scale: 0.0, perspective: 0.0, fliplr: 0.0, flipud: 0.0}

@@ -1,0 +1,86 @@
+# Análise qualitativa E03 (YOLO26s) x E05 (ASPE residual) — Etapa 4 da reestruturação (pedido 3 da proposta do orientador).
+# Registrada em 23/11/2026, ANTES de gerar as predições e as figuras.
+# Análise COMPLEMENTAR, posterior à avaliação única do teste (18/11/2026): usa SÓ a VALIDAÇÃO e modelos já treinados.
+# Nenhum modelo é treinado, nenhuma decisão do trabalho muda e o teste não é consultado.
+
+pergunta: >
+  O que a diferença quantitativa entre o E03 e o E05 significa nas imagens? Em particular, o ganho do E05 nos
+  limiares altos de IoU (Seção de resultados do ASPE residual) aparece como caixas mais bem ajustadas nos mesmos objetos?
+
+hipoteses:
+  principal: >
+    Nos objetos detectados corretamente pelos dois modelos, o IoU do E05 é maior que o do E03 no AgroPest-12:
+    a mediana da diferença de IoU (E05 - E03) é positiva e mais da metade desses objetos tem IoU maior no E05,
+    nas duas sementes. Refutável: mediana <= 0 ou fração <= 50% em alguma semente.
+  secundaria: >
+    O E05 não troca acertos por ajuste de caixa: o número de objetos que só o E05 acerta (categoria a) não é menor
+    que o número que só o E03 acerta (categoria b) no AgroPest-12. Refutável: a < b nas duas sementes.
+  ip102: >
+    Sem hipótese direcional para o IP102 (resultado quantitativo inconclusivo); a análise é descritiva, com foco na faixa rara.
+
+modelos:
+  E03: [plano_E03_s43, plano_E03_s44, ip102_limpo_E03_s43, ip102_limpo_E03_s44]
+  E05: [plano_E04_s43_ares, plano_E04_s44_ares, ip102_limpo_E04_s43_ares, ip102_limpo_E04_s44_ares]
+sementes: [43, 44]   # a semente 42 do E05 no AgroPest-12 foi afetada pelo defeito de retomada; fica de fora
+conjunto: validacao  # não há predições de teste salvas para estes modelos, e gerá-las violaria o uso único do teste
+
+predicoes: >
+  As mesmas do validador do Ultralytics (pesos fp32, NMS com IoU 0,7, conf >= 0,001), salvas por
+  scripts/qualitativa.py (executado em CPU, para não disputar a GPU com treinos em andamento) e filtradas em
+  conf >= 0,25, o mesmo limiar da decomposição de erros (scripts/diagnostico_aspe.py).
+
+criterio_por_objeto: >
+  Igual ao da decomposição de erros: cada objeto de referência é "correto" se a predição da mesma classe com maior IoU
+  tem IoU >= 0,5; senão "classe trocada" se uma predição de outra classe tem IoU >= 0,5; senão "localização" se a
+  melhor predição da mesma classe tem IoU entre 0,1 e 0,5; senão "perdido". Falsos positivos: predições sem objeto
+  da mesma classe com IoU >= 0,5.
+
+categorias:
+  a: E05 correto e E03 não
+  b: E03 correto e E05 não
+  c: ambos corretos (base da comparação de IoU)
+  d: nenhum correto
+
+amostragem_figuras:
+  semente_sorteio: 2026          # numpy.random.default_rng(2026), na ordem listada abaixo
+  agropest12_paineis: >
+    semente 43; sorteiam-se 2 imagens entre as que têm algum objeto da categoria (a) e 2 entre as que têm algum da (b),
+    sem repetir classe do objeto sorteado; painéis lado a lado (referência | E03 | E05).
+  ip102_raras: semente 43; 4 imagens sorteadas entre as de validação com objeto da faixa rara (< 20 imagens de treino).
+  mapas: >
+    semente 43; 3 imagens do AgroPest-12 sorteadas entre as que têm só objetos da categoria (c);
+    EigenCAM da saída do backbone (camada 10) do E03 e do E05 e magnitude da saída do ramo ASPE do E05 na camada 6.
+  galeria_apendice: >
+    semente 43; 1 imagem sorteada por classe do AgroPest-12 (12) e 6 imagens da faixa rara do IP102, sem repetir as
+    imagens das figuras do texto.
+  regra: as imagens são sorteadas, nunca escolhidas; casos de acerto e de erro dos dois modelos aparecem com o mesmo destaque.
+
+medidas_quantitativas:
+  - contagem das categorias a-d por base e semente
+  - diferença de IoU (E05 - E03) nos objetos da categoria c: mediana, fração com IoU maior no E05, fração com IoU >= 0,85
+  - pares de classes com maior variação de "classe trocada" entre E03 e E05 (AgroPest-12, sementes somadas)
+  - objetos da faixa rara do IP102 acertados por cada modelo, por semente
+  - falsos positivos por modelo
+
+resultado:   # 23/11/2026, python scripts/qualitativa.py analise (runs/val_eval/qualitativa.json); figuras: docs/escrita/figuras/scripts/fig_qualitativa.py
+  reproducao: predições geradas em CPU reproduziram a fitness de validação registrada (diferença máxima 0,0012, ip102_limpo_E04_s44_ares)
+  agropest12:
+    acertos: {s43: {E03: 1813, E05: 1829}, s44: {E03: 1809, E05: 1837}}   # de 2524 objetos
+    a_b: {s43: [121, 105], s44: [125, 97]}                                # hipótese secundária CONFIRMADA (a > b nas duas)
+    classe_trocada: {s43: [115, 111], s44: [111, 103]}                    # somadas: 226 -> 214
+    iou_c: {s43: {dif_mediana: +0.0037, ic95: [+0.0007, +0.0072], frac_E05_maior: 0.528},
+            s44: {dif_mediana: +0.0032, ic95: [-0.0000, +0.0068], frac_E05_maior: 0.523}}
+    hipotese_principal: CONFIRMADA pelo critério registrado (mediana > 0 e fração > 50% nas duas sementes), com efeito pequeno
+    concentracao: 28 imagens com >= 6 objetos (12% dos objetos) têm 24-26% dos objetos a/b e 34-36% dos d
+  ip102:
+    acertos: {s43: {E03: 1841, E05: 1854}, s44: {E03: 1834, E05: 1862}}   # de 2505 objetos
+    iou_c: {s43: {dif_mediana: -0.0014, ic95: [-0.0034, +0.0010]}, s44: {dif_mediana: +0.0013, ic95: [-0.0007, +0.0027]}}
+    raras: {objetos: 90, imagens: 32, acertos_s43: [48, 48], acertos_s44: [49, 48]}
+    classe_trocada: entre 17% e 18% dos objetos nos dois modelos (AgroPest-12: cerca de 4%)
+  mapas: >
+    EigenCAM no inseto nos dois modelos só na imagem da lesma; nas bordas pretas de rotação no caracol (ambos) e no
+    gafanhoto (E05). Ramo ASPE do E05 (razão |ASPE(y)|/|y|, definida antes da geração das figuras): 0,41-0,53, igual dentro
+    e fora das caixas (0,51 x 0,52; 0,51 x 0,53; 0,44 x 0,41).
+  ajustes_de_apresentacao: >
+    depois da primeira geração das figuras, só a diagramação mudou (altura das linhas, rótulos, legenda e escala do mapa do
+    ramo); os sorteios, com a mesma semente, selecionaram as mesmas imagens.

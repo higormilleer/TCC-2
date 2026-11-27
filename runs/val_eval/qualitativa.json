@@ -1,0 +1,164 @@
+{
+ "agropest12_s43": {
+  "n_obj": 2524,
+  "a": 121,
+  "b": 105,
+  "c": 1708,
+  "d": 590,
+  "acertos_E03": 1813,
+  "acertos_E05": 1829,
+  "classe_trocada_E03": 115,
+  "classe_trocada_E05": 111,
+  "fp_E03": 199,
+  "fp_E05": 217,
+  "iou_c_mediana_E03": 0.8286719360670768,
+  "iou_c_mediana_E05": 0.8336967596280118,
+  "iou_c_dif_mediana": 0.003701558683916528,
+  "iou_c_frac_E05_maior": 0.5281030444964872,
+  "iou_c_frac_maior_que_0.01": 0.452576112412178,
+  "iou_c_frac_menor_que_-0.01": 0.405152224824356,
+  "frac_iou85_E03": 0.42505854800936765,
+  "frac_iou85_E05": 0.4338407494145199,
+  "iou_c_dif_mediana_ic95": [
+   0.0007219913298138758,
+   0.007208888177818933
+  ]
+ },
+ "agropest12_s44": {
+  "n_obj": 2524,
+  "a": 125,
+  "b": 97,
+  "c": 1712,
+  "d": 590,
+  "acertos_E03": 1809,
+  "acertos_E05": 1837,
+  "classe_trocada_E03": 111,
+  "classe_trocada_E05": 103,
+  "fp_E03": 233,
+  "fp_E05": 225,
+  "iou_c_mediana_E03": 0.8267216949848,
+  "iou_c_mediana_E05": 0.8282850166671498,
+  "iou_c_dif_mediana": 0.0032143736402976963,
+  "iou_c_frac_E05_maior": 0.5233644859813084,
+  "iou_c_frac_maior_que_0.01": 0.44509345794392524,
+  "iou_c_frac_menor_que_-0.01": 0.3983644859813084,
+  "frac_iou85_E03": 0.4036214953271028,
+  "frac_iou85_E05": 0.41705607476635514,
+  "iou_c_dif_mediana_ic95": [
+   -3.300061310431698e-05,
+   0.006798008429319324
+  ]
+ },
+ "ip102_s43": {
+  "n_obj": 2505,
+  "a": 127,
+  "b": 114,
+  "c": 1727,
+  "d": 537,
+  "acertos_E03": 1841,
+  "acertos_E05": 1854,
+  "classe_trocada_E03": 441,
+  "classe_trocada_E05": 446,
+  "fp_E03": 139,
+  "fp_E05": 128,
+  "iou_c_mediana_E03": 0.8381237151130967,
+  "iou_c_mediana_E05": 0.8352997002049379,
+  "iou_c_dif_mediana": -0.001445420319854951,
+  "iou_c_frac_E05_maior": 0.48523451071221774,
+  "iou_c_frac_maior_que_0.01": 0.3711638679791546,
+  "iou_c_frac_menor_que_-0.01": 0.3954834973943254,
+  "frac_iou85_E03": 0.4504921829762594,
+  "frac_iou85_E05": 0.430804863925883,
+  "iou_c_dif_mediana_ic95": [
+   -0.003449711066571527,
+   0.0009875166897981291
+  ],
+  "raras_n_obj": 90,
+  "raras_acertos_E03": 48,
+  "raras_acertos_E05": 48,
+  "raras_a": 3,
+  "raras_b": 3,
+  "raras_imagens_val": 32
+ },
+ "ip102_s44": {
+  "n_obj": 2505,
+  "a": 133,
+  "b": 105,
+  "c": 1729,
+  "d": 538,
+  "acertos_E03": 1834,
+  "acertos_E05": 1862,
+  "classe_trocada_E03": 452,
+  "classe_trocada_E05": 429,
+  "fp_E03": 138,
+  "fp_E05": 137,
+  "iou_c_mediana_E03": 0.8377246204597183,
+  "iou_c_mediana_E05": 0.8375429262352474,
+  "iou_c_dif_mediana": 0.0012519759526680163,
+  "iou_c_frac_E05_maior": 0.5124349334875651,
+  "iou_c_frac_maior_que_0.01": 0.4013880855986119,
+  "iou_c_frac_menor_que_-0.01": 0.3747831116252169,
+  "frac_iou85_E03": 0.4366685945633314,
+  "frac_iou85_E05": 0.44129554655870445,
+  "iou_c_dif_mediana_ic95": [
+   -0.0007410002900510304,
+   0.002718188593160531
+  ],
+  "raras_n_obj": 90,
+  "raras_acertos_E03": 49,
+  "raras_acertos_E05": 48,
+  "raras_a": 2,
+  "raras_b": 3,
+  "raras_imagens_val": 32
+ },
+ "agropest12_confusoes_que_mais_mudaram": [
+  {
+   "verdadeira": 5,
+   "predita": 3,
+   "E03": 10,
+   "E05": 4
+  },
+  {
+   "verdadeira": 3,
+   "predita": 6,
+   "E03": 7,
+   "E05": 2
+  },
+  {
+   "verdadeira": 8,
+   "predita": 9,
+   "E03": 5,
+   "E05": 0
+  },
+  {
+   "verdadeira": 2,
+   "predita": 11,
+   "E03": 19,
+   "E05": 15
+  },
+  {
+   "verdadeira": 2,
+   "predita": 5,
+   "E03": 3,
+   "E05": 7
+  },
+  {
+   "verdadeira": 3,
+   "predita": 4,
+   "E03": 8,
+   "E05": 12
+  },
+  {
+   "verdadeira": 5,
+   "predita": 9,
+   "E03": 5,
+   "E05": 1
+  },
+  {
+   "verdadeira": 5,
+   "predita": 2,
+   "E03": 8,
+   "E05": 12
+  }
+ ]
+}

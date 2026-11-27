@@ -1,0 +1,589 @@
+{
+ "faixas_definidas_no_treino_limpo": {
+  "rara": 19,
+  "comum": 47,
+  "frequente": 31
+ },
+ "antes": {
+  "treino": {
+   "instancias": {
+    "rara": 646,
+    "comum": 3524,
+    "frequente": 10536,
+    "fora_das_faixas": 0
+   },
+   "imagens": {
+    "rara": 246,
+    "comum": 2654,
+    "frequente": 9602
+   },
+   "n_imagens": 12498
+  },
+  "validacao": {
+   "instancias": {
+    "rara": 136,
+    "comum": 749,
+    "frequente": 2247,
+    "fora_das_faixas": 0
+   },
+   "imagens": {
+    "rara": 53,
+    "comum": 569,
+    "frequente": 2057
+   },
+   "n_imagens": 2679
+  },
+  "teste": {
+   "instancias": {
+    "rara": 190,
+    "comum": 1087,
+    "frequente": 3167,
+    "fora_das_faixas": 0
+   },
+   "imagens": {
+    "rara": 75,
+    "comum": 807,
+    "frequente": 2917
+   },
+   "n_imagens": 3798
+  }
+ },
+ "depois": {
+  "treino": {
+   "instancias": {
+    "rara": 462,
+    "comum": 3310,
+    "frequente": 10123,
+    "fora_das_faixas": 0
+   },
+   "imagens": {
+    "rara": 228,
+    "comum": 2469,
+    "frequente": 9231
+   },
+   "n_imagens": 11924
+  },
+  "validacao": {
+   "instancias": {
+    "rara": 90,
+    "comum": 532,
+    "frequente": 1883,
+    "fora_das_faixas": 0
+   },
+   "imagens": {
+    "rara": 32,
+    "comum": 417,
+    "frequente": 1733
+   },
+   "n_imagens": 2182
+  },
+  "teste": {
+   "instancias": {
+    "rara": 190,
+    "comum": 1087,
+    "frequente": 3167,
+    "fora_das_faixas": 0
+   },
+   "imagens": {
+    "rara": 75,
+    "comum": 807,
+    "frequente": 2917
+   },
+   "n_imagens": 3798
+  }
+ },
+ "removidos": {
+  "train": 884,
+  "val": 187
+ },
+ "pares_entre_subconjuntos": {
+  "n": 2194,
+  "por_distancia": {
+   "0": 987,
+   "1": 572,
+   "2": 381,
+   "3": 254
+  },
+  "correlacao_64px": {
+   "mediana": 0.9985107481390602,
+   "p05": 0.89790411567864,
+   "min": -0.0012393416830408486,
+   "frac_maior_0_9": 0.9475843208751139,
+   "frac_maior_0_8": 0.9858705560619873,
+   "n_menor_0_8": 31
+  },
+  "tipos": {
+   "train-holdout": 1143,
+   "val-holdout": 248,
+   "train-val": 803
+  }
+ },
+ "amostra_inspecao": [
+  {
+   "n": 1,
+   "a": "IP040000798",
+   "b": "IP046001013",
+   "split_a": "train",
+   "split_b": "holdout",
+   "hamming": 0,
+   "correlacao": 1.0
+  },
+  {
+   "n": 2,
+   "a": "IP047000007",
+   "b": "IP048000800",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 1,
+   "correlacao": 1.0
+  },
+  {
+   "n": 3,
+   "a": "IP023001048",
+   "b": "IP046000529",
+   "split_a": "holdout",
+   "split_b": "train",
+   "hamming": 0,
+   "correlacao": 1.0
+  },
+  {
+   "n": 4,
+   "a": "IP015000060",
+   "b": "IP015001565",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 0,
+   "correlacao": 0.999
+  },
+  {
+   "n": 5,
+   "a": "IP046000241",
+   "b": "IP087000000",
+   "split_a": "train",
+   "split_b": "val",
+   "hamming": 3,
+   "correlacao": 0.97
+  },
+  {
+   "n": 6,
+   "a": "IP042000027",
+   "b": "IP042000200",
+   "split_a": "train",
+   "split_b": "holdout",
+   "hamming": 3,
+   "correlacao": 0.972
+  },
+  {
+   "n": 7,
+   "a": "IP051000026",
+   "b": "IP051001384",
+   "split_a": "train",
+   "split_b": "val",
+   "hamming": 1,
+   "correlacao": 1.0
+  },
+  {
+   "n": 8,
+   "a": "IP014000025",
+   "b": "IP014000857",
+   "split_a": "holdout",
+   "split_b": "train",
+   "hamming": 0,
+   "correlacao": 1.0
+  },
+  {
+   "n": 9,
+   "a": "IP043000069",
+   "b": "IP043000165",
+   "split_a": "holdout",
+   "split_b": "train",
+   "hamming": 1,
+   "correlacao": 1.0
+  },
+  {
+   "n": 10,
+   "a": "IP051001259",
+   "b": "IP051001404",
+   "split_a": "holdout",
+   "split_b": "val",
+   "hamming": 1,
+   "correlacao": 1.0
+  },
+  {
+   "n": 11,
+   "a": "IP008000023",
+   "b": "IP008000072",
+   "split_a": "holdout",
+   "split_b": "val",
+   "hamming": 0,
+   "correlacao": 0.999
+  },
+  {
+   "n": 12,
+   "a": "IP001000326",
+   "b": "IP003000523",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 1,
+   "correlacao": 0.878
+  },
+  {
+   "n": 13,
+   "a": "IP046000039",
+   "b": "IP098000202",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 0,
+   "correlacao": 0.995
+  },
+  {
+   "n": 14,
+   "a": "IP015001600",
+   "b": "IP015001636",
+   "split_a": "train",
+   "split_b": "holdout",
+   "hamming": 1,
+   "correlacao": 0.995
+  },
+  {
+   "n": 15,
+   "a": "IP059000000",
+   "b": "IP059001374",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 2,
+   "correlacao": 0.947
+  },
+  {
+   "n": 16,
+   "a": "IP014000082",
+   "b": "IP014000491",
+   "split_a": "train",
+   "split_b": "val",
+   "hamming": 2,
+   "correlacao": 0.987
+  },
+  {
+   "n": 17,
+   "a": "IP087000533",
+   "b": "IP098000204",
+   "split_a": "holdout",
+   "split_b": "val",
+   "hamming": 1,
+   "correlacao": 1.0
+  },
+  {
+   "n": 18,
+   "a": "IP068004465",
+   "b": "IP068004827",
+   "split_a": "train",
+   "split_b": "holdout",
+   "hamming": 1,
+   "correlacao": 0.988
+  },
+  {
+   "n": 19,
+   "a": "IP018000718",
+   "b": "IP020000001",
+   "split_a": "val",
+   "split_b": "holdout",
+   "hamming": 1,
+   "correlacao": 0.999
+  },
+  {
+   "n": 20,
+   "a": "IP020000239",
+   "b": "IP039000121",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 0,
+   "correlacao": 0.999
+  },
+  {
+   "n": 21,
+   "a": "IP006000035",
+   "b": "IP006000301",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 2,
+   "correlacao": 0.901
+  },
+  {
+   "n": 22,
+   "a": "IP018000777",
+   "b": "IP020000197",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 1,
+   "correlacao": 1.0
+  },
+  {
+   "n": 23,
+   "a": "IP024003970",
+   "b": "IP059000000",
+   "split_a": "holdout",
+   "split_b": "val",
+   "hamming": 1,
+   "correlacao": 0.919
+  },
+  {
+   "n": 24,
+   "a": "IP024003181",
+   "b": "IP027000573",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 3,
+   "correlacao": 0.871
+  },
+  {
+   "n": 25,
+   "a": "IP068000493",
+   "b": "IP068001411",
+   "split_a": "holdout",
+   "split_b": "train",
+   "hamming": 0,
+   "correlacao": 1.0
+  },
+  {
+   "n": 26,
+   "a": "IP050000117",
+   "b": "IP052001839",
+   "split_a": "train",
+   "split_b": "holdout",
+   "hamming": 1,
+   "correlacao": 0.92
+  },
+  {
+   "n": 27,
+   "a": "IP026000006",
+   "b": "IP026000621",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 0,
+   "correlacao": 0.999
+  },
+  {
+   "n": 28,
+   "a": "IP024003121",
+   "b": "IP027000037",
+   "split_a": "train",
+   "split_b": "holdout",
+   "hamming": 0,
+   "correlacao": 1.0
+  },
+  {
+   "n": 29,
+   "a": "IP068000450",
+   "b": "IP068005266",
+   "split_a": "train",
+   "split_b": "val",
+   "hamming": 0,
+   "correlacao": 0.999
+  },
+  {
+   "n": 30,
+   "a": "IP034000084",
+   "b": "IP055000862",
+   "split_a": "holdout",
+   "split_b": "train",
+   "hamming": 2,
+   "correlacao": 0.664
+  },
+  {
+   "n": 31,
+   "a": "IP074000382",
+   "b": "IP074000425",
+   "split_a": "holdout",
+   "split_b": "val",
+   "hamming": 1,
+   "correlacao": 0.995
+  },
+  {
+   "n": 32,
+   "a": "IP050000629",
+   "b": "IP051001359",
+   "split_a": "holdout",
+   "split_b": "val",
+   "hamming": 0,
+   "correlacao": 0.996
+  },
+  {
+   "n": 33,
+   "a": "IP068002220",
+   "b": "IP068005224",
+   "split_a": "train",
+   "split_b": "holdout",
+   "hamming": 0,
+   "correlacao": 0.997
+  },
+  {
+   "n": 34,
+   "a": "IP010000031",
+   "b": "IP010000057",
+   "split_a": "holdout",
+   "split_b": "train",
+   "hamming": 2,
+   "correlacao": 0.992
+  },
+  {
+   "n": 35,
+   "a": "IP077000607",
+   "b": "IP077000621",
+   "split_a": "train",
+   "split_b": "holdout",
+   "hamming": 0,
+   "correlacao": 0.999
+  },
+  {
+   "n": 36,
+   "a": "IP024002992",
+   "b": "IP028000246",
+   "split_a": "train",
+   "split_b": "val",
+   "hamming": 3,
+   "correlacao": 1.0
+  },
+  {
+   "n": 37,
+   "a": "IP015000060",
+   "b": "IP015001429",
+   "split_a": "val",
+   "split_b": "holdout",
+   "hamming": 2,
+   "correlacao": 0.869
+  },
+  {
+   "n": 38,
+   "a": "IP041000256",
+   "b": "IP041000293",
+   "split_a": "holdout",
+   "split_b": "train",
+   "hamming": 2,
+   "correlacao": 0.923
+  },
+  {
+   "n": 39,
+   "a": "IP014000502",
+   "b": "IP014000804",
+   "split_a": "holdout",
+   "split_b": "train",
+   "hamming": 0,
+   "correlacao": 1.0
+  },
+  {
+   "n": 40,
+   "a": "IP026000006",
+   "b": "IP026000089",
+   "split_a": "val",
+   "split_b": "train",
+   "hamming": 0,
+   "correlacao": 0.999
+  }
+ ],
+ "pares_menor_correlacao": [
+  {
+   "a": "IP047000248",
+   "b": "IP087000266",
+   "hamming": 3,
+   "correlacao": -0.001
+  },
+  {
+   "a": "IP011000207",
+   "b": "IP047000248",
+   "hamming": 3,
+   "correlacao": 0.016
+  },
+  {
+   "a": "IP095000183",
+   "b": "IP102003188",
+   "hamming": 2,
+   "correlacao": 0.424
+  },
+  {
+   "a": "IP000000114",
+   "b": "IP000001105",
+   "hamming": 3,
+   "correlacao": 0.498
+  },
+  {
+   "a": "IP024003366",
+   "b": "IP029000320",
+   "hamming": 2,
+   "correlacao": 0.512
+  },
+  {
+   "a": "IP029000053",
+   "b": "IP029000320",
+   "hamming": 2,
+   "correlacao": 0.515
+  },
+  {
+   "a": "IP047000159",
+   "b": "IP047000545",
+   "hamming": 2,
+   "correlacao": 0.557
+  },
+  {
+   "a": "IP047000159",
+   "b": "IP071003012",
+   "hamming": 2,
+   "correlacao": 0.558
+  },
+  {
+   "a": "IP010000499",
+   "b": "IP042000091",
+   "hamming": 3,
+   "correlacao": 0.574
+  },
+  {
+   "a": "IP050000236",
+   "b": "IP051000708",
+   "hamming": 3,
+   "correlacao": 0.575
+  },
+  {
+   "a": "IP010000382",
+   "b": "IP086000114",
+   "hamming": 3,
+   "correlacao": 0.583
+  },
+  {
+   "a": "IP071004428",
+   "b": "IP094000213",
+   "hamming": 3,
+   "correlacao": 0.585
+  }
+ ],
+ "inspecao_visual": {
+  "data": "23/11/2026",
+  "amostra_sorteada_40_pares": "40 de 40 eram a mesma fotografia (diferenças de marca d'água, recorte, faixa preta ou compressão)",
+  "todos_os_pares_com_correlacao_ate_0_8": {
+   "n": 31,
+   "mesma_fotografia": 18,
+   "fotografias_diferentes": 13,
+   "numeros_na_folha_dos_falsos_positivos": [
+    1,
+    2,
+    3,
+    9,
+    11,
+    12,
+    15,
+    16,
+    17,
+    25,
+    27,
+    28,
+    31
+   ],
+   "imagens_distintas_envolvidas": 20,
+   "tipos": {
+    "treino-validacao": 8,
+    "treino-teste": 4,
+    "validacao-teste": 1
+   },
+   "observacao": "6 dos 13 envolvem a mesma imagem (IP010000382, gorgulho em fundo claro uniforme)"
+  },
+  "estimativa": "no máximo 13 de 2.194 pares (0,6%) são falsos positivos; no máximo 5 imagens de treino/validação removidas indevidamente"
+ }
+}
