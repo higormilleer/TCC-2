@@ -1,0 +1,16 @@
+# Versões usadas nos experimentos do TCC (Python 3.9.13, Windows 11, CUDA 12.6).
+# Instale antes o PyTorch com CUDA:
+#   pip install torch==2.7.1 torchvision==0.22.1 --index-url https://download.pytorch.org/whl/cu126
+torch==2.7.1
+torchvision==0.22.1
+ultralytics==8.4.165
+numpy==2.0.2
+opencv-python==5.0.0.93
+pillow==11.3.0
+PyYAML==6.0.3
+iterative-stratification==0.1.9
+matplotlib==3.9.4
+pandas==2.3.3
+scipy==1.13.1
+tqdm==4.70.1
+gdown==5.2.2
